@@ -25,6 +25,7 @@ from evadb.utils.generic_utils import try_to_import_replicate
 
 _VALID_STABLE_DIFFUSION_MODEL = [
     "sdxl:af1a68a271597604546c09c64aabcd7782c114a63539a4a8d14d1eeda5630c33",
+    "lora-training:b2a308762e36ac48d16bfadc03a65493fe6e799f429f7941639a6acec5b276cc"
 ]
 
 

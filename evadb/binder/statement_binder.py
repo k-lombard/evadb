@@ -166,8 +166,8 @@ class StatementBinder:
 
         if node.groupby_clause:
             self.bind(node.groupby_clause)
-            check_table_object_is_groupable(node.from_table)
-            check_groupby_pattern(node.from_table, node.groupby_clause.value)
+            #check_table_object_is_groupable(node.from_table)
+            #check_groupby_pattern(node.from_table, node.groupby_clause.value)
         if node.orderby_list:
             for expr in node.orderby_list:
                 self.bind(expr[0])
