@@ -10,13 +10,13 @@ from evadb.utils.generic_utils import try_to_import_replicate
 
 _VALID_STABLE_DIFFUSION_MODEL = [
     "sdxl:af1a68a271597604546c09c64aabcd7782c114a63539a4a8d14d1eeda5630c33",
-    "lora-training:b2a308762e36ac48d16bfadc03a65493fe6e799f429f7941639a6acec5b276cc"
+    "lora-training:a5b0e981c875f656936c6c67b385c27057e226141e4e62fd5177ce96caee95e2"
 ]
 
 class StableDiffusionLoRA(AbstractFunction):
     def setup(
         self,
-        lora_model="lora-training:b2a308762e36ac48d16bfadc03a65493fe6e799f429f7941639a6acec5b276cc",
+        lora_model="lora-training:a5b0e981c875f656936c6c67b385c27057e226141e4e62fd5177ce96caee95e2",
         task_type="style", 
         file_location='/Users/kacylombard/Desktop/evadb/evadb/tutorials/lorazip.zip',
     ) -> None:
@@ -59,6 +59,9 @@ class StableDiffusionLoRA(AbstractFunction):
         # resolution (int): resolution of input images (default 512); images will be resized to this value
         import pathlib
         from PIL import Image
+        from urllib.request import urlretrieve
+        from diffusers import StableDiffusionPipeline
+        import torch
         os.mkdir('/Users/kacylombard/Desktop/evadb/evadb/tutorials/lora_images/') 
         print(df.info)
         for index, row in df.iterrows():
@@ -84,9 +87,10 @@ class StableDiffusionLoRA(AbstractFunction):
             )
             return output
         dfOut = train_model_on_images()
-        print(dfOut)
-        data = [dfOut] 
-  
-        dfFinal = pd.DataFrame(data, columns=['url']) 
-        print(dfFinal)
-        return dfFinal
+        output = replicate.run(
+            "cloneofsimo/lora:fce477182f407ffd66b94b08e761424cabd13b82b518754b83080bc75ad32466",
+            input={"prompt": "A painting of the ancient Greece, ultra-realism"},
+            lora_urls=dfOut
+        )
+        print(output)
+        return pd.DataFrame({"url": output}) 
